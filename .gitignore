@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment variables (never commit real secrets)
+.env
+.env.local
+atlas-credentials.env
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Build/output (if any ever gets generated)
+dist/
+build/
+
+# Postman exports with sensitive data (keep the sanitized export you actually submit, ignore local scratch exports if you use a separate naming convention)
+*.postman_environment.json

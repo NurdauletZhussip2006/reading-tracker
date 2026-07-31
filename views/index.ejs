@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Library & Reading Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <h1>Reading Tracker</h1>
+      <p class="subtitle">Estimate how long it'll take you to finish your book.</p>
+    </header>
+
+    <main class="card">
+
+      <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <strong>Please fix the following:</strong>
+          <ul>
+            <% errors.forEach(function(err) { %>
+              <li><%= err %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form action="/calculate-reading-plan" method="POST" class="reading-form">
+        <div class="form-group">
+          <label for="totalPages">Total pages</label>
+          <input type="number" id="totalPages" name="totalPages" placeholder="e.g. 350" min="1"
+                 value="<%= formData ? formData.totalPages : '' %>">
+        </div>
+
+        <div class="form-group">
+          <label for="pagesRead">Pages already read</label>
+          <input type="number" id="pagesRead" name="pagesRead" placeholder="e.g. 40" min="0"
+                 value="<%= formData ? formData.pagesRead : '' %>">
+        </div>
+
+        <div class="form-group">
+          <label for="readingSpeed">Reading speed (pages/hour)</label>
+          <input type="number" id="readingSpeed" name="readingSpeed" placeholder="e.g. 25" min="1"
+                 value="<%= formData ? formData.readingSpeed : '' %>">
+        </div>
+
+        <div class="form-group">
+          <label for="minutesPerDay">Minutes available per day</label>
+          <input type="number" id="minutesPerDay" name="minutesPerDay" placeholder="e.g. 45" min="1"
+                 value="<%= formData ? formData.minutesPerDay : '' %>">
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Reading start date</label>
+          <input type="date" id="startDate" name="startDate"
+                 value="<%= formData ? formData.startDate : '' %>">
+        </div>
+
+        <button type="submit" class="btn-primary">Calculate my reading plan</button>
+      </form>
+
+      <% if (result) { %>
+        <div class="result-card">
+          <h2>Your Reading Plan</h2>
+          <div class="result-row">
+            <span class="result-label">Remaining pages</span>
+            <span class="result-value"><%= result.remainingPages %></span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Total hours needed</span>
+            <span class="result-value"><%= result.totalHours %> hrs</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Days needed</span>
+            <span class="result-value"><%= result.daysNeeded %></span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Estimated completion</span>
+            <span class="result-value"><%= result.completionDate %></span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Progress so far</span>
+            <span class="result-value"><%= result.progressPercent %>%</span>
+          </div>
+        </div>
+      <% } %>
+
+    </main>
+
+    <nav class="site-nav">
+      <a href="/reading-tips">Reading Tips</a>
+      <a href="/search">Discover</a>
+    </nav>
+  </div>
+</body>
+</html>

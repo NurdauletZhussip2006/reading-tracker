@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Books | Digital Library & Reading Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/search.css">
+</head>
+<body>
+  <div class="page page-wide">
+    <header class="site-header">
+      <h1>📚 Search Books</h1>
+      <p class="subtitle">Find books by title, in any supported language.</p>
+    </header>
+
+    <form id="bookSearchForm" class="book-search-bar">
+        <input type="text" id="bookSearchInput" placeholder="Search by title, e.g. Dune" required>
+         <button type="submit" class="btn-primary">Search</button>
+    </form>
+
+
+    <div id="bookSearchStatus" class="status-area"></div>
+    <div id="bookSearchResults" class="book-list"></div>
+
+    <nav class="site-nav">
+      <a href="/search">Discover</a>
+      <a href="/">Reading Plan</a>
+    </nav>
+  </div>
+
+  <script src="/js/books-search.js"></script>
+</body>
+</html>
