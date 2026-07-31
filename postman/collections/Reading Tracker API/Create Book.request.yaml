@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Book
+url: "{{baseUrl}}/api/library/books"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \ \"title\": \"Test Book\",\r
+
+    \ \"authors\": [\"Test Author\"],\r
+
+    \ \"pages\": 200\r
+
+    }"
+order: 1785521940332
