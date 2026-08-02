@@ -1,5 +1,4 @@
 $kind: http-request
-name: Query Feature
 url: ""
 method: GET
 order: 4503596866881721
