@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Review — Rating too high
+url: "{{baseUrl}}/api/library/reviews"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"bookId\": \"6a6ce8adb518e90e2669ff6c\",\r
+
+    \  \"rating\": 6,\r
+
+    \  \"text\": \"Rating out of range test.\"\r
+
+    }"
+order: 4167762273484614

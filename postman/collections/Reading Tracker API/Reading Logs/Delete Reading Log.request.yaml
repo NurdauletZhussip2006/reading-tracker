@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Reading Log
+url: "{{baseUrl}}/api/library/reading-logs/6a6ed7f3ac6af19559087d82"
+method: DELETE
+order: 4500179027663027

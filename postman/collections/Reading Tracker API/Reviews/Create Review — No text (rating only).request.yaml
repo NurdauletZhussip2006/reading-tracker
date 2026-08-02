@@ -1,0 +1,14 @@
+$kind: http-request
+name: Create Review — No text (rating only)
+url: "{{baseUrl}}/api/library/reviews"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"bookId\": \"6a6ce8adb518e90e2669ff6c\",\r
+
+    \  \"rating\": 5\r
+
+    }"
+order: 4468179785553613

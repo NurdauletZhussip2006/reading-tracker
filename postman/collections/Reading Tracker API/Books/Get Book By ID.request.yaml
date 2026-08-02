@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Book By ID
+url: "{{baseUrl}}/api/library/books/6a6ce8adb518e90e2669ff6c"
+method: GET
+order: 4182126308453422

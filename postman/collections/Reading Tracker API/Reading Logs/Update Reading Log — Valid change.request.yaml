@@ -1,0 +1,8 @@
+$kind: http-request
+name: Update Reading Log — Valid change
+url: "{{baseUrl}}/api/library/reading-logs/6a6cef426f1116108e87b7b7"
+method: PUT
+body:
+  type: json
+  content: "{\r\n  \"minutes\": 45\r\n}"
+order: 4498417633826546

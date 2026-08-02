@@ -1,0 +1,14 @@
+$kind: http-request
+name: Update Review — Valid
+url: "{{baseUrl}}/api/library/reviews/6a6ee67de6a9c1914505499a"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"rating\": 1,\r
+
+    \  \"text\": \"Updated my opinion after a re-read.\"\r
+
+    }"
+order: 4481913185758886

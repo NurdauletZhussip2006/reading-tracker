@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Review
+url: "{{baseUrl}}/api/library/reviews/6a6ee7bd11285fda9421f173"
+method: DELETE
+order: 4495948130064286

@@ -59,4 +59,10 @@ function showBestSellersPage(req, res) {
 function showBookDetailsPage(req, res) {
   res.render('book-details');
 }
-module.exports = { showHomePage, calculateReadingPlan, showReadingTips, showSearchPage, showBooksSearchPage, showAuthorsSearchPage, showDictionarySearchPage, showLibrariesSearchPage, showBestSellersPage, showBookDetailsPage};
+function showAdminBooksPage(req, res) {
+  res.render('admin-books');
+}
+function showAdminReadingLogsPage(req, res) {
+  res.render('admin-reading-logs');
+}
+module.exports = { showHomePage, calculateReadingPlan, showReadingTips, showSearchPage, showBooksSearchPage, showAuthorsSearchPage, showDictionarySearchPage, showLibrariesSearchPage, showBestSellersPage, showBookDetailsPage, showAdminBooksPage, showAdminReadingLogsPage};

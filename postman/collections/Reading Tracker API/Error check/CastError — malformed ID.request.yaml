@@ -1,0 +1,5 @@
+$kind: http-request
+name: CastError — malformed ID
+url: "{{baseUrl}}/api/library/books/abc123"
+method: GET
+order: 1785659133701

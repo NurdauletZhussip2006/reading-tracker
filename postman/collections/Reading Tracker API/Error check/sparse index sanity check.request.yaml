@@ -1,0 +1,16 @@
+$kind: http-request
+name: sparse index sanity check
+url: "{{baseUrl}}/api/library/books"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"No ISBN Test 2\",\r
+
+    \  \"authors\": [\"Test Author\"],\r
+
+    \  \"pages\": 100\r
+
+    }"
+order: 3332431425646511

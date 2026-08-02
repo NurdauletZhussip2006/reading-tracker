@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Review — Nonexistent bookId
+url: "{{baseUrl}}/api/library/reviews"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"bookId\": \"111111111111111111111111\",\r
+
+    \  \"rating\": 4,\r
+
+    \  \"text\": \"This book does not exist.\"\r
+
+    }"
+order: 4050091209277209

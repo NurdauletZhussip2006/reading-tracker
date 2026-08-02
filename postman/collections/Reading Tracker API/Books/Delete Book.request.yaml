@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Book
+url: "{{baseUrl}}/api/library/books/6a6ceae7b518e90e2669ff6d"
+method: DELETE
+order: 4496999643158772

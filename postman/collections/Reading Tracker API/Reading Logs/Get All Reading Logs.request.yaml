@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get All Reading Logs
+url: "{{baseUrl}}/api/library/reading-logs"
+method: GET
+order: 4452496719288563

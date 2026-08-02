@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Review — Rating too low
+url: "{{baseUrl}}/api/library/reviews"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"bookId\": \"6a6ce8adb518e90e2669ff6c\",\r
+
+    \  \"rating\": -1,\r
+
+    \  \"text\": \"Rating cannot be begative\"\r
+
+    }"
+order: 4312412009447823

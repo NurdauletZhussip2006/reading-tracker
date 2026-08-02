@@ -1,0 +1,8 @@
+$kind: http-request
+name: Update Reading Log — pagesRead exceeds after update
+url: "{{baseUrl}}/api/library/reading-logs/6a6cef426f1116108e87b7b7"
+method: PUT
+body:
+  type: json
+  content: "{\r\n  \"pagesRead\": 999999\r\n}"
+order: 4500079887483012

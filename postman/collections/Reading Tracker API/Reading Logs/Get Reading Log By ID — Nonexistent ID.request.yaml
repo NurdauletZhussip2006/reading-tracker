@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Reading Log By ID — Nonexistent ID
+url: "{{baseUrl}}/api/library/reading-logs/111111111111111111111111"
+method: GET
+order: 4488537720939392

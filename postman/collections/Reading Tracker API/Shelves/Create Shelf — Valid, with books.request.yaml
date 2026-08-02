@@ -1,0 +1,14 @@
+$kind: http-request
+name: Create Shelf — Valid, with books
+url: "{{baseUrl}}/api/library/shelves"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"My Test Shelf\",\r
+
+    \  \"bookIds\": [\"6a6ce215142be32ee52912b6\", \"6a6ce215142be32ee52912c2\"]\r
+
+    }"
+order: 1785658948003

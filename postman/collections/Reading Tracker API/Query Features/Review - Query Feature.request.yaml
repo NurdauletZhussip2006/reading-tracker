@@ -1,0 +1,7 @@
+$kind: http-request
+name: Review - Query Feature
+url: "{{baseUrl}}/api/library/reading-logs?completion=false"
+method: GET
+queryParams:
+  completion: "false"
+order: 2866099453731122

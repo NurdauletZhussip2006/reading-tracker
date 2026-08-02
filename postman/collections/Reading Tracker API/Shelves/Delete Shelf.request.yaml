@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Shelf
+url: "{{baseUrl}}/api/library/shelves/6a6eee59e96f96860131ee15"
+method: DELETE
+order: 4488752663694097

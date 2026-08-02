@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Reading Log By ID — Valid
+url: "{{baseUrl}}/api/library/reading-logs/6a6cef426f1116108e87b7b7"
+method: GET
+order: 4458435118722280

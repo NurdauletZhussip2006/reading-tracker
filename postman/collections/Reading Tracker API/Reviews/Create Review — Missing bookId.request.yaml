@@ -1,0 +1,14 @@
+$kind: http-request
+name: Create Review — Missing bookId
+url: "{{baseUrl}}/api/library/reviews"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"rating\": 4,\r
+
+    \  \"text\": \"Missing book reference test.\"\r
+
+    }\r\n"
+order: 3287184781009508

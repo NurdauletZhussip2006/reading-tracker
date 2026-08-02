@@ -1,0 +1,18 @@
+$kind: http-request
+name: Duplicate ISBN — 409 Conflict
+url: "{{baseUrl}}/api/library/books"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Duplicate ISBN Test\",\r
+
+    \  \"authors\": [\"Test Author\"],\r
+
+    \  \"pages\": 100,\r
+
+    \  \"isbn\": \"9780141439518\"\r
+
+    }"
+order: 2069106307421027

@@ -12,4 +12,8 @@ router.get('/search/dictionary', readingController.showDictionarySearchPage);
 router.get('/search/libraries', readingController.showLibrariesSearchPage);
 router.get('/search/best-sellers', readingController.showBestSellersPage);
 router.get('/search/books/details', readingController.showBookDetailsPage);
+router.get('/admin/books', readingController.showAdminBooksPage);
+router.get('/admin/reading-logs', readingController.showAdminReadingLogsPage);
+
+
 module.exports = router;
