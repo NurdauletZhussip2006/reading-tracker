@@ -6,6 +6,9 @@ const apiRoutes = require('./routes/apiRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const readingLogRoutes = require('./routes/readingLogRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const shelfRoutes = require('./routes/shelfRoutes');
+
+
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -24,6 +27,7 @@ app.use('/api', apiRoutes);
 app.use('/api/library/books', bookRoutes);
 app.use('/api/library/reading-logs', readingLogRoutes);
 app.use('/api/library/reviews', reviewRoutes);
+app.use('/api/library/shelves', shelfRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
