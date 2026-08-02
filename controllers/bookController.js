@@ -11,8 +11,41 @@ async function createBook(req, res, next) {
 
 async function getBooks(req, res, next) {
   try {
-    const books = await Book.find();
-    res.json({ count: books.length, books });
+    const { author, genre, sort, page, limit } = req.query;
+    const filter = {};
+
+    if (author) {
+      filter.authors = { $regex: author, $options: 'i' };
+    }
+
+    if (genre) {
+      filter.genres = { $regex: genre, $options: 'i' };
+    }
+
+    const pageNum = Math.max(parseInt(page) || 1, 1);
+    const limitNum = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
+    const skip = (pageNum - 1) * limitNum;
+
+    let query = Book.find(filter);
+
+    if (sort) {
+      const sortField = sort.startsWith('-') ? sort.slice(1) : sort;
+      const sortOrder = sort.startsWith('-') ? -1 : 1;
+      query = query.sort({ [sortField]: sortOrder });
+    }
+
+    const [books, total] = await Promise.all([
+      query.skip(skip).limit(limitNum),
+      Book.countDocuments(filter),
+    ]);
+
+    res.json({
+      count: books.length,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / limitNum),
+      books,
+    });
   } catch (err) {
     next(err);
   }
