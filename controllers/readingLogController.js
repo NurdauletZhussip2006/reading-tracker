@@ -36,8 +36,41 @@ async function createReadingLog(req, res, next) {
 
 async function getReadingLogs(req, res, next) {
   try {
-    const logs = await ReadingLog.find().populate('bookId', 'title authors');
-    res.json({ count: logs.length, logs });
+    const { completion, sort, page, limit } = req.query;
+
+    const pageNum = Math.max(parseInt(page) || 1, 1);
+    const limitNum = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
+    const skip = (pageNum - 1) * limitNum;
+
+    let query = ReadingLog.find().populate('bookId', 'title authors pages');
+
+    if (sort) {
+      const sortField = sort.startsWith('-') ? sort.slice(1) : sort;
+      const sortOrder = sort.startsWith('-') ? -1 : 1;
+      query = query.sort({ [sortField]: sortOrder });
+    }
+
+    let logs = await query;
+
+    if (completion !== undefined) {
+      const wantCompleted = completion === 'true';
+      logs = logs.filter((log) => {
+        if (!log.bookId) return false;
+        const isCompleted = log.pagesRead >= log.bookId.pages;
+        return isCompleted === wantCompleted;
+      });
+    }
+
+    const total = logs.length;
+    const paginated = logs.slice(skip, skip + limitNum);
+
+    res.json({
+      count: paginated.length,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / limitNum),
+      logs: paginated,
+    });
   } catch (err) {
     next(err);
   }

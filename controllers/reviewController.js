@@ -28,8 +28,37 @@ async function createReview(req, res, next) {
 
 async function getReviews(req, res, next) {
   try {
-    const reviews = await Review.find().populate('bookId', 'title authors');
-    res.json({ count: reviews.length, reviews });
+    const { rating, sort, page, limit } = req.query;
+    const filter = {};
+
+    if (rating !== undefined) {
+      filter.rating = Number(rating);
+    }
+
+    const pageNum = Math.max(parseInt(page) || 1, 1);
+    const limitNum = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
+    const skip = (pageNum - 1) * limitNum;
+
+    let query = Review.find(filter).populate('bookId', 'title authors');
+
+    if (sort) {
+      const sortField = sort.startsWith('-') ? sort.slice(1) : sort;
+      const sortOrder = sort.startsWith('-') ? -1 : 1;
+      query = query.sort({ [sortField]: sortOrder });
+    }
+
+    const [reviews, total] = await Promise.all([
+      query.skip(skip).limit(limitNum),
+      Review.countDocuments(filter),
+    ]);
+
+    res.json({
+      count: reviews.length,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / limitNum),
+      reviews,
+    });
   } catch (err) {
     next(err);
   }
