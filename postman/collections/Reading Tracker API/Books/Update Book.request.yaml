@@ -1,4 +1,14 @@
 $kind: http-request
-url: ""
-method: GET
+name: Update Book
+url: "{{baseUrl}}/api/library/books/6a6ce215142be32ee52912b5"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"_id\"  : \"6a6ce215142be32ee52912b5\",\r
+
+    \    \"title\": \"Путь Абая\"\r
+
+    }"
 order: 4471878086172375

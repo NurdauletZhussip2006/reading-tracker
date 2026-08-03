@@ -2,3 +2,5 @@ name: New Environment
 values:
   - key: '{{baseUrl}}'
     value: ''
+  - key: baseUrl
+    value: ''

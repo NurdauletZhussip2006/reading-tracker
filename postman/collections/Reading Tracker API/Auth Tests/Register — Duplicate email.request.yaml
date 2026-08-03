@@ -1,0 +1,14 @@
+$kind: http-request
+name: Register — Duplicate email
+url: "{{baseUrl}}/api/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"reader1@test.com\",\r
+
+    \  \"password\": \"differentpass123\"\r
+
+    }"
+order: 2474342862708140

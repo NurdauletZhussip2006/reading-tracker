@@ -1,0 +1,14 @@
+$kind: http-request
+name: Refresh — Invalid token
+url: "{{baseUrl}}/api/auth/refresh"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"userId\": \"6a707ec69e3a42e95c6a0f4f\",\r
+
+    \  \"refreshToken\": \"completely-made-up-fake-token\"\r
+
+    }"
+order: 4503525778627089

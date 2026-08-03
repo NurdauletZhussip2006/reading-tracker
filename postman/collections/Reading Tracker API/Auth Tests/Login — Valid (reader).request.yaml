@@ -1,0 +1,14 @@
+$kind: http-request
+name: Login — Valid (reader)
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"reader2@test.com\",\r
+
+    \  \"password\": \"readerpass123\"\r
+
+    }"
+order: 4466715466676065

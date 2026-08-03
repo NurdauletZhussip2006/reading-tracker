@@ -1,0 +1,14 @@
+$kind: http-request
+name: Refresh — Valid
+url: "{{baseUrl}}/api/auth/refresh"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"userId\": \"6a707ec69e3a42e95c6a0f4f\",\r
+
+    \  \"refreshToken\":\"ef130161286e70d730fe6e5418d528a9894c49d629b1903d999b6f47346252755eb0f48c49bd6bc7\"\r
+
+    }"
+order: 4503460622785888

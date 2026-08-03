@@ -1,0 +1,12 @@
+$kind: http-request
+name: Register — Missing fields
+url: "{{baseUrl}}/api/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"onlyemail@test.com\"\r
+
+    }"
+order: 4393096927858494

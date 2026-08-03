@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const readingLogSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'A user reference is required'],
+    },
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Book',
@@ -21,8 +26,29 @@ const readingLogSchema = new mongoose.Schema(
       required: [true, 'Minutes is required'],
       min: [1, 'Minutes must be at least 1'],
     },
+    genre: {
+      type: String,
+      default: null,
+    },
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: null,
+    },
+    completionPercent: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: null,
+    },
   },
   { timestamps: true }
 );
+
+readingLogSchema.index({ userId: 1 });
+readingLogSchema.index({ date: 1 });
+readingLogSchema.index({ bookId: 1 });
+readingLogSchema.index({ genre: 1 });
 
 module.exports = mongoose.model('ReadingLog', readingLogSchema);

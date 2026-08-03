@@ -1,0 +1,16 @@
+$kind: http-request
+name: Register — Attempted privilege escalation
+url: "{{baseUrl}}/api/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"sneaky@test.com\",\r
+
+    \  \"password\": \"sneakypass123\",\r
+
+    \  \"role\": \"admin\"\r
+
+    }"
+order: 1865646367963936

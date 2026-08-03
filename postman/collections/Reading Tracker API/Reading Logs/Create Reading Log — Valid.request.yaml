@@ -1,4 +1,5 @@
 $kind: http-request
+name: Create Reading Log — Valid
 url: ""
-method: GET
+method: POST
 order: 4503313286141967

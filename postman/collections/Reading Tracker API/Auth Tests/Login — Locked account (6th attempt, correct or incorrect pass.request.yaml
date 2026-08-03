@@ -1,0 +1,5 @@
+$kind: http-request
+name: Login — Locked account (6th attempt, correct or incorrect password)
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+order: 4503225709978027

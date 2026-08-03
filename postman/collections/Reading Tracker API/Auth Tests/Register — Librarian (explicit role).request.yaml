@@ -1,0 +1,16 @@
+$kind: http-request
+name: Register — Librarian (explicit role)
+url: "{{baseUrl}}/api/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"librarian1@test.com\",\r
+
+    \  \"password\": \"librarianpass123\",\r
+
+    \  \"role\": \"librarian\"\r
+
+    }"
+order: 1626364371170272

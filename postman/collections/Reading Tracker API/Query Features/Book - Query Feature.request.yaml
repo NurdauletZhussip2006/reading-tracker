@@ -1,7 +1,7 @@
 $kind: http-request
 name: Book - Query Feature
-url: "{{baseUrl}}/api/library/books?author=достоевский"
+url: "{{baseUrl}}/api/library/books?author=достоевс"
 method: GET
 queryParams:
-  author: достоевский
+  author: достоевс
 order: 1785659057140
