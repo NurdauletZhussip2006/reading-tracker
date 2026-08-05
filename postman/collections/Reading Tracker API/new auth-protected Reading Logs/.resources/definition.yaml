@@ -1,0 +1,9 @@
+$kind: collection
+name: new auth-protected Reading Logs
+auth:
+  - id: 20de9511-0134-4595-bce1-be86a4d744f4
+    type: bearer
+    name: Bearer Token
+    credentials:
+      token: "{{json_web_token_1ct7}}"
+order: 3198009820053503

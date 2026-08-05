@@ -23,6 +23,22 @@ function generateRefreshToken() {
   return crypto.randomBytes(40).toString('hex');
 }
 
+function validatePasswordStrength(password) {
+  if (password.length < 8) {
+    return 'Password must be at least 8 characters.';
+  }
+
+  const hasLetter = /[a-zA-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialChar = /[^a-zA-Z0-9]/.test(password);
+
+  if (!hasLetter || !hasNumber || !hasSpecialChar) {
+    return 'Password must contain at least one letter, one number, and one special character.';
+  }
+
+  return null;
+}
+
 async function register(req, res, next) {
   try {
     const { email, password, role } = req.body || {};
@@ -31,8 +47,9 @@ async function register(req, res, next) {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+    const passwordError = validatePasswordStrength(password);
+    if (passwordError) {
+      return res.status(400).json({ error: passwordError });
     }
 
     const existing = await User.findOne({ email: email.toLowerCase() });

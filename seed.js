@@ -1,7 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
-
+const bcrypt = require('bcrypt');
+const User = require('./models/User');
 const Book = require('./models/Book');
 const ReadingLog = require('./models/ReadingLog');
 const Review = require('./models/Review');
@@ -64,6 +65,12 @@ const books = [
   { isbn: '9780307388407', title: 'Open', authors: ['Andre Agassi'], genres: ['Autobiography', 'Memoir', 'Sports'], pages: 400 },
 ];
 
+const testUsers = [
+  { email: 'reader@test.com', password: 'ReaderPass1!', role: 'reader' },
+  { email: 'reader2@test.com', password: 'ReaderPass2!', role: 'reader' },
+  { email: 'librarian@test.com', password: 'LibrarianPass1!', role: 'librarian' },
+];
+
 const reviewTexts = [
   'A genuinely gripping read from start to finish.',
   'Dense in places, but deeply rewarding.',
@@ -83,51 +90,95 @@ async function seed() {
     ReadingLog.deleteMany({}),
     Review.deleteMany({}),
     Shelf.deleteMany({}),
+    User.deleteMany({}),
   ]);
+
+  console.log('Seeding users...');
+  const createdUsers = await Promise.all(
+    testUsers.map(async (u) => {
+      const passwordHash = await bcrypt.hash(u.password, 12);
+      return User.create({ email: u.email, passwordHash, role: u.role });
+    })
+  );
+  const readerIds = createdUsers.filter((u) => u.role === 'reader').map((u) => u._id);
 
   console.log(`Seeding ${books.length} books...`);
   const createdBooks = await Book.insertMany(books);
 
   console.log('Seeding reading logs...');
   const readingLogs = [];
+  const today = new Date(2026, 6, 1);
+
   createdBooks.forEach((book, index) => {
-    const sessionsForThisBook = 1 + (index % 3);
+    const sessionsForThisBook = 2 + (index % 4);
+    let cumulativePages = 0;
+
     for (let s = 0; s < sessionsForThisBook; s++) {
+      const pagesThisSession = Math.min(
+        20 + ((index + s) % 5) * 15,
+        book.pages - cumulativePages
+      );
+      if (pagesThisSession <= 0) break;
+
+      cumulativePages += pagesThisSession;
+      const daysAgo = (index * 3 + s * 5) % 180;
+      const logDate = new Date(today);
+      logDate.setDate(logDate.getDate() - daysAgo);
+
       readingLogs.push({
+        userId: readerIds[(index + s) % readerIds.length],
         bookId: book._id,
-        date: new Date(2026, 0, 1 + index + s * 3),
-        pagesRead: Math.min(30 + s * 25 + (index % 10), book.pages),
-        minutes: 20 + ((index + s) % 5) * 10,
+        date: logDate,
+        pagesRead: pagesThisSession,
+        minutes: 15 + ((index + s) % 6) * 10,
+        genre: book.genres[0] || null,
+        rating: (index + s) % 5 === 0 ? null : ((index + s) % 5) + 1,
+        completionPercent: Math.round((cumulativePages / book.pages) * 100),
       });
     }
   });
+
   await ReadingLog.insertMany(readingLogs);
 
   console.log('Seeding reviews...');
+  const reviewTexts = [
+    'A genuinely gripping read from start to finish.',
+    'Dense in places, but deeply rewarding.',
+    'One of my favorites — highly recommend.',
+    'Solid, though the pacing dragged a little in the middle.',
+    'Changed how I think about the subject entirely.',
+    'A classic for a reason.',
+    'Took me a while to get into, but stuck with me after finishing.',
+  ];
   const reviews = createdBooks
     .filter((_, index) => index % 2 === 0)
     .map((book, i) => ({
+      userId: readerIds[i % readerIds.length],
       bookId: book._id,
       rating: (i % 5) + 1,
       text: reviewTexts[i % reviewTexts.length],
     }));
   await Review.insertMany(reviews);
 
-    console.log('Seeding shelves...');
-    const shelves = [
-      { name: 'Kazakh Literature', bookIds: createdBooks.slice(0, 10).map((b) => b._id) },
-      { name: 'English Classics', bookIds: createdBooks.slice(10, 20).map((b) => b._id) },
-      { name: 'Russian Literature', bookIds: createdBooks.slice(20, 30).map((b) => b._id) },
-      { name: 'Business & Self-Improvement', bookIds: createdBooks.slice(30, 40).map((b) => b._id) },
-      { name: 'Autobiography & Memoir', bookIds: createdBooks.slice(40, 50).map((b) => b._id) },
-    ];
+  console.log('Seeding shelves...');
+  const shelves = [
+    { name: 'Kazakh Literature', bookIds: createdBooks.slice(0, 10).map((b) => b._id) },
+    { name: 'English Classics', bookIds: createdBooks.slice(10, 20).map((b) => b._id) },
+    { name: 'Russian Literature', bookIds: createdBooks.slice(20, 30).map((b) => b._id) },
+    { name: 'Business & Self-Improvement', bookIds: createdBooks.slice(30, 40).map((b) => b._id) },
+    { name: 'Autobiography & Memoir', bookIds: createdBooks.slice(40, 50).map((b) => b._id) },
+  ];
   await Shelf.insertMany(shelves);
 
   console.log('Seed complete:');
+  console.log(`  ${createdUsers.length} users`);
   console.log(`  ${createdBooks.length} books`);
   console.log(`  ${readingLogs.length} reading logs`);
   console.log(`  ${reviews.length} reviews`);
   console.log(`  ${shelves.length} shelves`);
+  console.log('');
+  console.log('Test credentials:');
+  testUsers.forEach((u) => console.log(`  ${u.role}: ${u.email} / ${u.password}`));
 
   await mongoose.connection.close();
   process.exit(0);

@@ -19,7 +19,7 @@ async function createReview(req, res, next) {
 
     await verifyBookExists(bookId);
 
-    const review = await Review.create(req.body);
+    const review = await Review.create({ ...req.body, userId: req.user.id });
     res.status(201).json(review);
   } catch (err) {
     next(err);
@@ -64,6 +64,17 @@ async function getReviews(req, res, next) {
   }
 }
 
+async function getMyReviews(req, res, next) {
+  try {
+    const reviews = await Review.find({ userId: req.user.id })
+      .populate('bookId', 'title authors')
+      .sort('-createdAt');
+    res.json({ count: reviews.length, reviews });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getReviewById(req, res, next) {
   try {
     const review = await Review.findById(req.params.id).populate('bookId', 'title authors');
@@ -86,6 +97,10 @@ async function updateReview(req, res, next) {
       return res.status(404).json({ error: 'Review not found' });
     }
 
+    if (existing.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'You can only edit your own reviews.' });
+    }
+
     if (req.body.bookId) {
       await verifyBookExists(req.body.bookId);
     }
@@ -103,16 +118,31 @@ async function updateReview(req, res, next) {
 
 async function deleteReview(req, res, next) {
   try {
-    const review = await Review.findByIdAndDelete(req.params.id);
+    const existing = await Review.findById(req.params.id);
 
-    if (!review) {
+    if (!existing) {
       return res.status(404).json({ error: 'Review not found' });
     }
 
-    res.json({ message: 'Review deleted', review });
+    const isOwner = existing.userId.toString() === req.user.id;
+    const isLibrarian = req.user.role === 'librarian';
+
+    if (!isOwner && !isLibrarian) {
+      return res.status(403).json({ error: 'You can only delete your own reviews.' });
+    }
+
+    await Review.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Review deleted', review: existing });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { createReview, getReviews, getReviewById, updateReview, deleteReview };
+module.exports = {
+  createReview,
+  getReviews,
+  getMyReviews,
+  getReviewById,
+  updateReview,
+  deleteReview,
+};

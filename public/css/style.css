@@ -297,3 +297,47 @@ input:focus {
   padding: 0.75rem 1.75rem;
   text-decoration: none;
 }
+
+
+
+.auth-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.auth-status a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-status a:hover {
+  text-decoration: underline;
+}
+
+.auth-status .user-email {
+  color: var(--color-text-muted);
+}
+
+.auth-status .btn-logout {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.auth-status .btn-logout:hover {
+  text-decoration: underline;
+}

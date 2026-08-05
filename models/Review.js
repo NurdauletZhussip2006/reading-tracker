@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'A user reference is required'],
+    },
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Book',

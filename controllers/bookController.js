@@ -1,8 +1,18 @@
 const Book = require('../models/Book');
+const AuditLog = require('../models/AuditLog');
+
+async function logAction(userId, action, resourceId, details) {
+  try {
+    await AuditLog.create({ userId, action, resourceType: 'Book', resourceId, details });
+  } catch (err) {
+    console.error('Audit log failed:', err.message);
+  }
+}
 
 async function createBook(req, res, next) {
   try {
     const book = await Book.create(req.body);
+    await logAction(req.user.id, 'create', book._id, `Created "${book.title}"`);
     res.status(201).json(book);
   } catch (err) {
     next(err);
@@ -76,6 +86,7 @@ async function updateBook(req, res, next) {
       return res.status(404).json({ error: 'Book not found' });
     }
 
+    await logAction(req.user.id, 'update', book._id, `Updated "${book.title}"`);
     res.json(book);
   } catch (err) {
     next(err);
@@ -90,6 +101,7 @@ async function deleteBook(req, res, next) {
       return res.status(404).json({ error: 'Book not found' });
     }
 
+    await logAction(req.user.id, 'delete', book._id, `Deleted "${book.title}"`);
     res.json({ message: 'Book deleted', book });
   } catch (err) {
     next(err);

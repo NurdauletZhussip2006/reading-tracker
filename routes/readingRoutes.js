@@ -14,6 +14,10 @@ router.get('/search/best-sellers', readingController.showBestSellersPage);
 router.get('/search/books/details', readingController.showBookDetailsPage);
 router.get('/admin/books', readingController.showAdminBooksPage);
 router.get('/admin/reading-logs', readingController.showAdminReadingLogsPage);
-
+router.get('/dashboard', readingController.showDashboardPage);
+router.get('/register', readingController.showRegisterPage);
+router.get('/login', readingController.showLoginPage);
+router.get('/admin/reviews', readingController.showAdminReviewsPage);
+router.get('/admin/shelves', readingController.showAdminShelvesPage);
 
 module.exports = router;

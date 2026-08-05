@@ -32,6 +32,14 @@ async function fetchJson(url, options) {
   return data;
 }
 
+// NEW HELPER ADDED HERE: For authenticated write requests
+async function authFetchJson(url, options) {
+  const response = await authFetch(url, options);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || `Request failed with status ${response.status}`);
+  return data;
+}
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
@@ -132,7 +140,8 @@ bookForm.addEventListener('submit', async (event) => {
   setStatus('bookFormStatus', editingId ? 'Updating…' : 'Creating…', 'loading');
 
   try {
-    await fetchJson(url, {
+    // CHANGED: Using authFetchJson instead of fetchJson for Create/Update
+    await authFetchJson(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -178,7 +187,8 @@ adminBooksList.addEventListener('click', async (event) => {
     if (!confirmed) return;
 
     try {
-      await fetchJson(`/api/library/books/${book._id}`, { method: 'DELETE' });
+      // CHANGED: Using authFetchJson instead of fetchJson for Delete
+      await authFetchJson(`/api/library/books/${book._id}`, { method: 'DELETE' });
       loadBooks();
     } catch (err) {
       setStatus('adminBooksStatus', err.message, 'error');

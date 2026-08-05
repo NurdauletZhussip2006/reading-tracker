@@ -65,4 +65,20 @@ function showAdminBooksPage(req, res) {
 function showAdminReadingLogsPage(req, res) {
   res.render('admin-reading-logs');
 }
-module.exports = { showHomePage, calculateReadingPlan, showReadingTips, showSearchPage, showBooksSearchPage, showAuthorsSearchPage, showDictionarySearchPage, showLibrariesSearchPage, showBestSellersPage, showBookDetailsPage, showAdminBooksPage, showAdminReadingLogsPage};
+function showDashboardPage(req, res) {
+  res.render('dashboard');
+}
+function showRegisterPage(req, res) {
+  res.render('register');
+}
+function showLoginPage(req, res) {
+  res.render('login');
+}
+function showAdminReviewsPage(req, res) {
+  res.render('admin-reviews');
+}
+function showAdminShelvesPage(req, res) {
+  res.render('admin-shelves');
+}
+
+module.exports = { showHomePage, calculateReadingPlan, showReadingTips, showSearchPage, showBooksSearchPage, showAuthorsSearchPage, showDictionarySearchPage, showLibrariesSearchPage, showBestSellersPage, showAdminShelvesPage, showBookDetailsPage, showAdminBooksPage, showAdminReadingLogsPage, showDashboardPage, showLoginPage, showRegisterPage, showAdminReviewsPage};

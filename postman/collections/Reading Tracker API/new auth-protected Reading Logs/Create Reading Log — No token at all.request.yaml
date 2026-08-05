@@ -1,0 +1,18 @@
+$kind: http-request
+name: Create Reading Log — No token at all
+url: "{{baseUrl}}/api/library/reading-logs"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"bookId\": \"REAL_BOOK_ID\",\r
+
+    \  \"date\": \"2026-03-01\",\r
+
+    \  \"pagesRead\": 20,\r
+
+    \  \"minutes\": 15\r
+
+    }"
+order: 1785820239641
