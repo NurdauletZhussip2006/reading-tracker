@@ -124,6 +124,35 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.15);
 }
 
+select {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--color-card);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+select:not([multiple]) {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%237a6a5c' d='M4 6l4 4 4-4' stroke='%237a6a5c' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  padding-right: 2.25rem;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.15);
+}
+
 .btn-primary {
   width: 100%;
   padding: 0.8rem;
@@ -340,4 +369,131 @@ input:focus {
 
 .auth-status .btn-logout:hover {
   text-decoration: underline;
+}
+
+.site-nav {
+  display: flex;
+  justify-content: center; /* Centers the links under the form */
+  flex-wrap: nowrap;       /* Strictly prevents wrapping to a second row */
+  gap: 25px;               /* Space between each link */
+  margin-top: 30px;        /* Adds breathing room above the nav */
+  width: 100%;
+}
+
+.site-nav a {
+  white-space: nowrap;     /* Prevents multi-word links from stacking on themselves */
+  /* your other existing link styles (color, font-weight, etc.) */
+}
+
+/* Styles all links to be brown with no underline */
+a {
+  color: #8B4513; /* Use the exact brown hex code from your other text/buttons */
+  text-decoration: none;
+  font-weight: bold; /* Optional: makes it stand out a bit more */
+}
+
+/* Optional: Add an underline only when the user hovers over the link */
+a:hover {
+  text-decoration: underline;
+}
+
+/* Style the select dropdown to match text inputs */
+/* Style ONLY the Role dropdown on the register page */
+#regRole {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #333;
+  background-color: #eef5ff;    /* The light blue background */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* Add the focus ring specifically for the Role dropdown */
+#regRole:focus {
+  outline: none;
+  border-color: #8B4513;
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+
+
+/* ==========================================================================
+   Checkbox List (For multi-select replacements)
+   ========================================================================== */
+.checkbox-list {
+  width: 100%;
+  max-height: 220px;            /* Keeps the box a reasonable height */
+  overflow-y: auto;             /* Adds a scrollbar only if there are many books */
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);  /* Matches your input backgrounds */
+  padding: 0.5rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Adds the focus ring if the user tabs into the checkbox list */
+.checkbox-list:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.15);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;                  /* Space between checkbox and text */
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: normal;          /* Overrides the bold form labels */
+  font-size: 0.95rem;
+  transition: background-color 0.15s ease;
+  margin-bottom: 2px;
+}
+
+/* Beautiful hover effect for each row */
+.checkbox-item:hover {
+  background-color: var(--color-result-bg);
+}
+
+/* Prevent checkboxes from stretching to 100% width like text inputs */
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.checkbox-item + .checkbox-item {
+  border-top: 1px solid var(--color-border);
+}
+
+.checkbox-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.checkbox-list-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.checkbox-list-label-row label {
+  margin-bottom: 0;
+}
+
+.checkbox-list-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background: var(--color-result-bg);
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
 }

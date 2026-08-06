@@ -3,9 +3,9 @@ const router = express.Router();
 const reviewController = require('../controllers/reviewController');
 const authenticate = require('../middleware/auth');
 
-router.get('/', reviewController.getReviews);
+router.get('/', authenticate, reviewController.getReviews);
 router.get('/mine', authenticate, reviewController.getMyReviews);
-router.get('/:id', reviewController.getReviewById);
+router.get('/:id', authenticate, reviewController.getReviewById);
 
 router.post('/', authenticate, reviewController.createReview);
 router.put('/:id', authenticate, reviewController.updateReview);

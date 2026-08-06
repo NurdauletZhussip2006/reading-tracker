@@ -14,47 +14,98 @@
       <div class="auth-bar">
         <div id="authStatus" class="auth-status"></div>
       </div>
-      <h1>Reading Tracker</h1>
-      <p class="subtitle">Estimate how long it'll take you to finish your book.</p>
+      <h1>Reading Progress</h1>
+      <p class="subtitle">Log your reading sessions and track your own progress.</p>
     </header>
 
-    <div class="admin-list-controls">
-      <div class="control-group">
-        <label for="logCompletionFilter">Completion</label>
-        <select id="logCompletionFilter">
-          <option value="">All Sessions</option>
-          <option value="true">Completed a Book</option>
-          <option value="false">In Progress</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label for="logSortFilter">Sort by</label>
-        <select id="logSortFilter">
-          <option value="-date">Newest First</option>
-          <option value="date">Oldest First</option>
-          <option value="-pagesRead">Most Pages Read</option>
-          <option value="-minutes">Most Time Spent</option>
-        </select>
-      </div>
-      <div class="control-group control-group-search">
-        <label for="logSearchFilter">Search by book title</label>
-        <input type="text" id="logSearchFilter" placeholder="e.g. Dune">
-      </div>
-    </div>
+    <section class="card">
+      <h2 id="logFormTitle">Log a Reading Session</h2>
+      <form id="logForm" class="admin-form">
+        <input type="hidden" id="logFormId">
+        <input type="hidden" id="logGenre">
+        <input type="hidden" id="logCompletionPercent">
 
-    <div id="adminLogsStatus" class="status-area"></div>
-    <div id="adminLogsList" class="admin-table"></div>
+        <div class="form-group">
+          <label for="logBookId">Book</label>
+          <select id="logBookId" required>
+            <option value="">Select a book...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="logDate">Date</label>
+          <input type="date" id="logDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="logPagesRead">Pages Read This Session</label>
+          <input type="number" id="logPagesRead" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label for="logMinutes">Minutes Spent Reading</label>
+          <input type="number" id="logMinutes" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="logRating">Rating (optional)</label>
+          <input type="number" id="logRating" min="0" max="5">
+        </div>
+
+        <div id="completionFeedback" class="completion-feedback"></div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="logFormSubmit">Save Session</button>
+          <button type="button" class="btn-secondary" id="logFormCancel" style="display:none;">Cancel Edit</button>
+        </div>
+      </form>
+      <div id="logFormStatus" class="status-area"></div>
+    </section>
+
+    <section class="card">
+      <h2>My Reading Sessions</h2>
+
+      <div class="admin-list-controls">
+        <div class="control-group">
+          <label for="logCompletionFilter">Completion</label>
+          <select id="logCompletionFilter">
+            <option value="">All Sessions</option>
+            <option value="true">Completed a Book</option>
+            <option value="false">In Progress</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="logSortFilter">Sort by</label>
+          <select id="logSortFilter">
+            <option value="-date">Newest First</option>
+            <option value="date">Oldest First</option>
+            <option value="-pagesRead">Most Pages Read</option>
+            <option value="-minutes">Most Time Spent</option>
+          </select>
+        </div>
+        <div class="control-group control-group-search">
+          <label for="logSearchFilter">Search by book title</label>
+          <input type="text" id="logSearchFilter" placeholder="e.g. Dune">
+        </div>
+      </div>
+
+      <div id="adminLogsStatus" class="status-area"></div>
+      <div id="adminLogsList" class="admin-table"></div>
+    </section>
 
     <nav class="site-nav">
-      <a href="/">Reading Plan</a>
       <a href="/search">Discover</a>
+      <a href="/admin/books">Book Catalogue</a>
       <a href="/admin/reading-logs">Reading Logs</a>
+      <a href="/admin/reviews">Reviews</a>
+      <a href="/admin/shelves">Shelves</a>
       <a href="/dashboard">Dashboard</a>
     </nav>
   </div>
 
 
   <script src="/js/authFetch.js"></script>
+  <script src="/js/navGate.js"></script>
   <script src="/js/authStatus.js"></script>
   <script src="/js/admin-reading-logs.js"></script>
 </body>

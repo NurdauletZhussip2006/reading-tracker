@@ -36,11 +36,13 @@ async function createReadingLog(req, res, next) {
 
 async function getReadingLogs(req, res, next) {
   try {
-    const { completion, sort, page, limit, fields, startDate, endDate, genre, userId } = req.query;
+    const { completion, sort, page, limit, fields, startDate, endDate, genre } = req.query;
 
-    const filter = {};
+    // Always scoped to the logged-in user — a client-supplied userId is
+    // intentionally ignored so nobody can read someone else's reading history
+    // by passing a different id in the query string.
+    const filter = { userId: req.user.id };
     if (genre) filter.genre = genre;
-    if (userId) filter.userId = userId;
     if (startDate || endDate) {
       filter.date = {};
       if (startDate) filter.date.$gte = new Date(startDate);
@@ -69,8 +71,10 @@ async function getReadingLogs(req, res, next) {
     if (completion !== undefined) {
       const wantCompleted = completion === 'true';
       logs = logs.filter((log) => {
-        if (!log.bookId) return false;
-        const isCompleted = log.pagesRead >= log.bookId.pages;
+        // completionPercent (cumulative progress) is the correct signal here —
+        // pagesRead is per-session and will almost never equal the book's full
+        // page count on its own, even for a book the reader has finished.
+        const isCompleted = (log.completionPercent || 0) >= 100;
         return isCompleted === wantCompleted;
       });
     }
@@ -136,6 +140,10 @@ async function getReadingLogById(req, res, next) {
 
     if (!log) {
       return res.status(404).json({ error: 'Reading log not found' });
+    }
+
+    if (log.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'You can only view your own reading logs.' });
     }
 
     res.json(log);

@@ -15,6 +15,10 @@ JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET,
 JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
 ACCESS_TOKEN_EXPIRY: '15m',
 REFRESH_TOKEN_EXPIRY: '7d',
+REFRESH_TOKEN_EXPIRY_MS: 7 * 24 * 60 * 60 * 1000, // keep in sync with REFRESH_TOKEN_EXPIRY above
 MAX_LOGIN_ATTEMPTS: 5,
 LOCKOUT_DURATION_MINUTES: 15,
+// Gate for self-service librarian signup. If unset, registering as "librarian"
+// is disabled entirely and every public signup becomes "reader".
+LIBRARIAN_SIGNUP_CODE: process.env.LIBRARIAN_SIGNUP_CODE || null,
 };

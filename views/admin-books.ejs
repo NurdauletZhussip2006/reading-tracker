@@ -14,11 +14,12 @@
   <div class="auth-bar">
     <div id="authStatus" class="auth-status"></div>
   </div>
-  <h1>Reading Tracker</h1>
-  <p class="subtitle">Estimate how long it'll take you to finish your book.</p>
+  <h1>Book Catalogue</h1>
+
 </header>
 
-    <section class="card">
+
+    <section class="card" id="bookFormSection">
       <h2 id="formTitle">Add a New Book</h2>
       <form id="bookForm" class="admin-form">
         <input type="hidden" id="bookFormId">
@@ -60,6 +61,7 @@
       <div id="bookFormStatus" class="status-area"></div>
     </section>
 
+
     <section class="card">
         <div class="admin-list-header">
           <h2>All Books</h2>
@@ -82,15 +84,19 @@
     </section>
 
     <nav class="site-nav">
-      <a href="/">Reading Plan</a>
       <a href="/search">Discover</a>
+      <a href="/admin/books">Book Catalogue</a>
       <a href="/admin/reading-logs">Reading Logs</a>
+      <a href="/admin/reviews">Reviews</a>
+      <a href="/admin/shelves">Shelves</a>
       <a href="/dashboard">Dashboard</a>
+
     </nav>
   </div>
 
 
   <script src="/js/authFetch.js"></script>
+  <script src="/js/navGate.js"></script>
   <script src="/js/authStatus.js"></script>
   <script src="/js/admin-books.js"></script>
 </body>

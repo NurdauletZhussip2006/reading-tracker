@@ -45,6 +45,10 @@ function escapeHtml(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+function isLibrarian() {
+  const auth = typeof getAuthData === 'function' ? getAuthData() : null;
+  return !!(auth && auth.user && auth.user.role === 'librarian');
+}
 
 function resetForm() {
   bookForm.reset();
@@ -90,10 +94,12 @@ function renderBookList(books) {
           ${book.isbn ? ` · ISBN ${escapeHtml(book.isbn)}` : ''}
         </div>
       </div>
+      ${isLibrarian() ? `
       <div class="admin-row-actions">
         <button class="admin-btn admin-btn-edit" data-edit-id="${book._id}">Edit</button>
         <button class="admin-btn admin-btn-delete" data-delete-id="${book._id}">Delete</button>
       </div>
+      ` : ''}
     </div>
   `).join('');
 }
@@ -195,5 +201,9 @@ adminBooksList.addEventListener('click', async (event) => {
     }
   }
 });
+
+if (!isLibrarian()) {
+  document.getElementById('bookFormSection').style.display = 'none';
+}
 
 loadBooks();

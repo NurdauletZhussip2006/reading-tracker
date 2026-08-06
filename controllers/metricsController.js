@@ -3,15 +3,18 @@ const Book = require('../models/Book');
 
 async function getMetrics(req, res, next) {
   try {
-    const { userId, startDate, endDate } = req.query;
+    const { startDate, endDate } = req.query;
 
-    const matchStage = {};
-    if (userId) matchStage.userId = new (require('mongoose').Types.ObjectId)(userId);
+    // Always the logged-in user's own stats. Unlike reviews, there's no
+    // "librarian sees everyone's dashboard" exception here — this is
+    // personal analytics, not a moderation surface.
+    const matchStage = { userId: new (require('mongoose').Types.ObjectId)(req.user.id) };
     if (startDate || endDate) {
       matchStage.date = {};
       if (startDate) matchStage.date.$gte = new Date(startDate);
       if (endDate) matchStage.date.$lte = new Date(endDate);
     }
+    // ...(rest of the function is unchanged)
 
     const [overallStats, genreBreakdown, booksCompleted] = await Promise.all([
       ReadingLog.aggregate([

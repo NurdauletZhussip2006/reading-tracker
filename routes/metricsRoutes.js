@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const metricsController = require('../controllers/metricsController');
+const authenticate = require('../middleware/auth');
 
-router.get('/', metricsController.getMetrics);
+router.get('/', authenticate, metricsController.getMetrics);
 
 module.exports = router;

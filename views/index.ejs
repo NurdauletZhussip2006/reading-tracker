@@ -31,12 +31,6 @@
 
       <form action="/calculate-reading-plan" method="POST" class="reading-form">
         <div class="form-group">
-          <label for="totalPages">Total pages</label>
-          <input type="number" id="totalPages" name="totalPages" placeholder="e.g. 350" min="1"
-                 value="<%= formData ? formData.totalPages : '' %>">
-        </div>
-
-        <div class="form-group">
           <label for="pagesRead">Pages already read</label>
           <input type="number" id="pagesRead" name="pagesRead" placeholder="e.g. 40" min="0"
                  value="<%= formData ? formData.pagesRead : '' %>">
@@ -102,6 +96,7 @@
     </nav>
   </div>
   <script src="/js/authFetch.js"></script>
+  <script src="/js/navGate.js"></script>
   <script src="/js/authStatus.js"></script>
 </body>
 </html>

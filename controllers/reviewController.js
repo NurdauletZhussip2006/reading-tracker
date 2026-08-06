@@ -31,6 +31,13 @@ async function getReviews(req, res, next) {
     const { rating, sort, page, limit } = req.query;
     const filter = {};
 
+    // Librarians already have moderation power (they can delete any review,
+    // see deleteReview below), so they can see every review. Everyone else
+    // only sees their own — reader1 should never see reader2's reviews.
+    if (req.user.role !== 'librarian') {
+      filter.userId = req.user.id;
+    }
+
     if (rating !== undefined) {
       filter.rating = Number(rating);
     }
@@ -81,6 +88,13 @@ async function getReviewById(req, res, next) {
 
     if (!review) {
       return res.status(404).json({ error: 'Review not found' });
+    }
+
+    const isOwner = review.userId.toString() === req.user.id;
+    const isLibrarian = req.user.role === 'librarian';
+
+    if (!isOwner && !isLibrarian) {
+      return res.status(403).json({ error: 'You can only view your own reviews.' });
     }
 
     res.json(review);

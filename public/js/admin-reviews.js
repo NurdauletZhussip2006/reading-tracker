@@ -57,7 +57,7 @@ async function loadReviews() {
   try {
     const rating = reviewRatingFilter.value;
     const qs = rating !== '' ? `?rating=${rating}&limit=100` : '?limit=100';
-    const data = await fetchJson(`/api/library/reviews${qs}`);
+    const data = await authFetchJson(`/api/library/reviews${qs}`);
     currentReviews = data.reviews;
     renderReviewList(currentReviews);
     setStatus('adminReviewsStatus', `${data.total} review(s)`, null);

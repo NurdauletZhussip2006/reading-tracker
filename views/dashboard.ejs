@@ -16,8 +16,8 @@
       <div class="auth-bar">
         <div id="authStatus" class="auth-status"></div>
       </div>
-      <h1>Reading Tracker</h1>
-      <p class="subtitle">Estimate how long it'll take you to finish your book.</p>
+      <h1>📊 Analytics Dashboard</h1>
+      <p class="subtitle">Your reading habits, visualized.</p>
     </header>
 
     <div class="admin-list-controls">
@@ -30,12 +30,6 @@
           <option value="all">All Time</option>
         </select>
       </div>
-      <div class="control-group">
-        <label for="genreFilterDashboard">Genre</label>
-        <select id="genreFilterDashboard">
-          <option value="">All Genres</option>
-        </select>
-      </div>
     </div>
 
     <div id="dashboardStatus" class="status-area"></div>
@@ -44,40 +38,67 @@
 
     <div class="chart-grid">
       <div class="card chart-card">
-        <h2>Pages Over Time</h2>
-        <canvas id="pagesOverTimeChart"></canvas>
+        <div class="chart-card-header">
+          <h2>Pages Over Time</h2>
+          <p class="chart-card-subtitle">Daily pages read across the selected range</p>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="pagesOverTimeChart"></canvas>
+        </div>
       </div>
 
       <div class="card chart-card">
-        <h2>Reading by Genre</h2>
-        <canvas id="genreChart"></canvas>
+        <div class="chart-card-header">
+          <h2>Reading by Genre</h2>
+          <p class="chart-card-subtitle">Sessions logged per genre</p>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="genreChart"></canvas>
+        </div>
       </div>
 
       <div class="card chart-card">
-        <h2>Completion Status</h2>
-        <canvas id="completionChart"></canvas>
+        <div class="chart-card-header">
+          <h2>Completion Status</h2>
+          <p class="chart-card-subtitle">Share of sessions that finished a book</p>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="completionChart"></canvas>
+        </div>
       </div>
 
-      <div class="card chart-card chart-card-wide">
-        <h2>Reading Activity Heatmap</h2>
+      <div class="card chart-card">
+        <div class="chart-card-header">
+          <h2>Reading Calendar</h2>
+          <p class="chart-card-subtitle">Last 14 days — darker squares mean more pages read</p>
+        </div>
+        <div id="calendarSummary" class="calendar-summary"></div>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-header">
+        <h2>Pages by Day of Week</h2>
+        <p class="chart-card-subtitle">Which weekdays you read the most</p>
+      </div>
+      <div class="chart-canvas-wrap">
         <canvas id="heatmapChart"></canvas>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Reading Calendar Summary</h2>
-      <div id="calendarSummary" class="calendar-summary"></div>
-    </div>
-
     <nav class="site-nav">
-      <a href="/">Reading Plan</a>
+      <a href="/search">Discover</a>
       <a href="/admin/books">Book Catalogue</a>
       <a href="/admin/reading-logs">Reading Logs</a>
+      <a href="/admin/reviews">Reviews</a>
+      <a href="/admin/shelves">Shelves</a>
+      <a href="/dashboard">Dashboard</a>
     </nav>
   </div>
 
-  <script src="/js/dashboard.js"></script>
   <script src="/js/authFetch.js"></script>
+  <script src="/js/navGate.js"></script>
+  <script src="/js/dashboard.js"></script>
   <script src="/js/authStatus.js"></script>
 </body>
 </html>

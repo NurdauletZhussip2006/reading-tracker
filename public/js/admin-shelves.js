@@ -35,10 +35,32 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function isLibrarian() {
+  const auth = typeof getAuthData === 'function' ? getAuthData() : null;
+  return !!(auth && auth.user && auth.user.role === 'librarian');
+}
+
+function getCheckboxes() {
+  return Array.from(shelfBookIds.querySelectorAll('input[type="checkbox"]'));
+}
+
+function getCheckedBookIds() {
+  return getCheckboxes()
+    .filter((cb) => cb.checked)
+    .map((cb) => cb.value);
+}
+
+function updateSelectedCount() {
+  const count = getCheckedBookIds().length;
+  const countEl = document.getElementById('shelfBookIdsCount');
+  countEl.textContent = `${count} selected`;
+}
+
 function resetForm() {
   shelfForm.reset();
   shelfFormId.value = '';
-  Array.from(shelfBookIds.options).forEach((opt) => (opt.selected = false));
+  getCheckboxes().forEach((cb) => (cb.checked = false));
+  updateSelectedCount();
   shelfFormTitle.textContent = 'Create a New Shelf';
   shelfFormSubmit.textContent = 'Create Shelf';
   shelfFormCancel.style.display = 'none';
@@ -47,9 +69,23 @@ function resetForm() {
 async function loadBookOptions() {
   const data = await fetchJson('/api/library/books?limit=100');
   shelfBookIds.innerHTML = data.books
-    .map((b) => `<option value="${b._id}">${escapeHtml(b.title)}</option>`)
+    .map(
+      (b) => `
+      <label class="checkbox-item">
+        <input type="checkbox" value="${b._id}">
+        <span>${escapeHtml(b.title)}</span>
+      </label>
+    `
+    )
     .join('');
+  updateSelectedCount();
 }
+
+shelfBookIds.addEventListener('change', (event) => {
+  if (event.target.matches('input[type="checkbox"]')) {
+    updateSelectedCount();
+  }
+});
 
 async function loadShelves() {
   setStatus('adminShelvesStatus', 'Loading…', 'loading');
@@ -71,15 +107,28 @@ function renderShelfList(shelves) {
   }
 
   adminShelvesList.innerHTML = shelves.map((s) => `
-    <div class="admin-row">
-      <div class="admin-row-info">
-        <div class="admin-row-title">${escapeHtml(s.name)}</div>
-        <div class="admin-row-meta">${s.bookIds.length} book(s): ${s.bookIds.map((b) => escapeHtml(b.title)).join(', ') || '—'}</div>
+    <div class="admin-row admin-row-expandable">
+      <div class="admin-row-main">
+        <div class="admin-row-info">
+          <div class="admin-row-title">${escapeHtml(s.name)}</div>
+          <div class="admin-row-meta">${s.bookIds.length} book(s)</div>
+        </div>
+        <div class="admin-row-actions">
+          <button class="admin-btn admin-btn-view" data-toggle-id="${s._id}">View Books</button>
+          ${isLibrarian() ? `
+            <button class="admin-btn admin-btn-edit" data-edit-id="${s._id}">Edit</button>
+            <button class="admin-btn admin-btn-delete" data-delete-id="${s._id}">Delete</button>
+          ` : ''}
+        </div>
       </div>
-      <div class="admin-row-actions">
-        <button class="admin-btn admin-btn-edit" data-edit-id="${s._id}">Edit</button>
-        <button class="admin-btn admin-btn-delete" data-delete-id="${s._id}">Delete</button>
-      </div>
+      <ul class="shelf-book-list" id="shelfBooks-${s._id}" style="display:none;">
+        ${s.bookIds.map((b) => `
+          <li>
+            <span class="shelf-book-title">${escapeHtml(b.title)}</span>
+            ${b.authors && b.authors.length ? `<span class="shelf-book-authors"> — ${escapeHtml(b.authors.join(', '))}</span>` : ''}
+          </li>
+        `).join('') || '<li>No books on this shelf yet.</li>'}
+      </ul>
     </div>
   `).join('');
 }
@@ -87,7 +136,7 @@ function renderShelfList(shelves) {
 shelfForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const selectedBookIds = Array.from(shelfBookIds.selectedOptions).map((opt) => opt.value);
+  const selectedBookIds = getCheckedBookIds();
 
   const payload = {
     name: shelfName.value.trim(),
@@ -120,7 +169,14 @@ shelfFormCancel.addEventListener('click', resetForm);
 adminShelvesList.addEventListener('click', async (event) => {
   const editBtn = event.target.closest('[data-edit-id]');
   const deleteBtn = event.target.closest('[data-delete-id]');
+  const toggleBtn = event.target.closest('[data-toggle-id]');
 
+  if (toggleBtn) {
+    const list = document.getElementById(`shelfBooks-${toggleBtn.dataset.toggleId}`);
+    const isHidden = list.style.display === 'none';
+    list.style.display = isHidden ? 'block' : 'none';
+    toggleBtn.textContent = isHidden ? 'Hide Books' : 'View Books';
+  }
   if (editBtn) {
     const shelf = currentShelves.find((s) => s._id === editBtn.dataset.editId);
     if (!shelf) return;
@@ -129,9 +185,10 @@ adminShelvesList.addEventListener('click', async (event) => {
     shelfName.value = shelf.name;
 
     const bookIdSet = new Set(shelf.bookIds.map((b) => b._id));
-    Array.from(shelfBookIds.options).forEach((opt) => {
-      opt.selected = bookIdSet.has(opt.value);
+    getCheckboxes().forEach((cb) => {
+      cb.checked = bookIdSet.has(cb.value);
     });
+    updateSelectedCount();
 
     shelfFormTitle.textContent = `Editing: ${shelf.name}`;
     shelfFormSubmit.textContent = 'Save Changes';
@@ -156,7 +213,11 @@ adminShelvesList.addEventListener('click', async (event) => {
 });
 
 async function init() {
-  await loadBookOptions();
+  if (isLibrarian()) {
+    await loadBookOptions();
+  } else {
+    document.getElementById('shelfFormSection').style.display = 'none';
+  }
   await loadShelves();
 }
 
